@@ -2,9 +2,6 @@ namespace SpriteKind {
     export const fm = SpriteKind.create()
     export const bos = SpriteKind.create()
 }
-/**
- * <---le gusta a Jorge
- */
 sprites.onOverlap(SpriteKind.Player, SpriteKind.bos, function (sprite, otherSprite) {
     info.changeScoreBy(-1)
     pizza += -1
