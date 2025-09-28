@@ -1,3 +1,19 @@
+namespace SpriteKind {
+    export const fm = SpriteKind.create()
+    export const bos = SpriteKind.create()
+}
+/**
+ * <---le gusta a Jorge
+ */
+sprites.onOverlap(SpriteKind.Player, SpriteKind.bos, function (sprite, otherSprite) {
+    info.changeScoreBy(-1)
+    pizza += -1
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.fm, function (sprite, otherSprite) {
+    info.changeScoreBy(20)
+    pizza += 20
+    tiles.placeOnRandomTile(pizzeria, sprites.dungeon.floorDark3)
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile`, function (sprite, location) {
     game.splash("¿Quieres saber cuanto vale tu coche?")
 })
@@ -110,6 +126,57 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 info.onScore(0, function () {
     game.gameOver(false)
 })
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.bos, function (sprite, otherSprite) {
+    info.changeScoreBy(5)
+    pizza += 5
+    sprites.destroy(otherSprite)
+})
+info.onScore(200, function () {
+    tiles.setCurrentTilemap(tilemap`nivel0`)
+    af = sprites.create(img`
+        ........................................
+        ........................................
+        ........................................
+        ........................................
+        ........................................
+        ........................................
+        ........................................
+        ........................................
+        ........................................
+        ......6664444444444eee4444444444666.....
+        ......6664444444444eee4444444444666.....
+        ......6664444444444eee4444444444666.....
+        ......4444444444444eee4444444444444.....
+        ......4444444444444eee4444444444444.....
+        ......4444444444444eee4444444444444.....
+        ......4444444444444eee4444444444444.....
+        ......4444444444444eee4444444444444.....
+        ......44444444444442224444444444444.....
+        ......44444444444425552444444444444.....
+        ......eeeeeeeeeee2555552eeeeeeeeeee.....
+        ......eeeeeeeeeee2555552eeeeeeeeeee.....
+        ......eeeeeeeeeee2555552eeeeeeeeeee.....
+        ......44444444444425552444444444444.....
+        ......44444444444442224444444444444.....
+        ......4444444444444eee4444444444444.....
+        ......4444444444444eee4444444444444.....
+        ......4444444444444eee4444444444444.....
+        ......4444444444444eee4444444444444.....
+        ......4444444444444eee4444444444444.....
+        ......4444444444444eee4444444444444.....
+        ......4444444444444eee4444444444444.....
+        ......6664444444444eee4444444444666.....
+        ......6664444444444eee4444444444666.....
+        ......6664444444444eee4444444444666.....
+        ........................................
+        ........................................
+        ........................................
+        ........................................
+        ........................................
+        ........................................
+        `, SpriteKind.Player)
+    tiles.placeOnRandomTile(pizzeria, sprites.dungeon.floorDark3)
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
     info.changeScoreBy(10)
     pizza += 10
@@ -120,18 +187,23 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
     sprites.destroy(sprite)
     tiles.placeOnRandomTile(pizzeria, sprites.vehicle.roadVertical)
 })
+/**
+ */
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     info.changeScoreBy(-5)
     pizza += -5
     y += -5
     sprites.destroy(otherSprite)
 })
+let xhf: Sprite = null
 let ñ: Sprite = null
 let y = 0
+let af: Sprite = null
 let projectile: Sprite = null
 let Dirección = 0
 let pizzeria: Sprite = null
 let paco: Sprite = null
+let _200 = 200
 tiles.setCurrentTilemap(tilemap`nivel`)
 paco = sprites.create(assets.image`Paco derecha`, SpriteKind.Player)
 paco.setPosition(75, 57)
@@ -192,10 +264,16 @@ game.onUpdateInterval(5000, function () {
         `, SpriteKind.Enemy)
     tiles.placeOnRandomTile(ñ, sprites.builtin.brick)
     ñ.follow(paco, 16)
+    animation.runImageAnimation(
+    ñ,
+    assets.animation`myAnim0`,
+    100,
+    true
+    )
 })
 game.onUpdateInterval(350, function () {
     if (controller.up.isPressed()) {
-        paco.x += -16
+        paco.y += -16
         info.changeScoreBy(-1)
         pizza += -1
         animation.runImageAnimation(
@@ -237,7 +315,7 @@ game.onUpdateInterval(350, function () {
 })
 game.onUpdateInterval(350, function () {
     if (controller.down.isPressed()) {
-        paco.x += 16
+        paco.y += 16
         info.changeScoreBy(-1)
         pizza += -1
         animation.runImageAnimation(
@@ -247,6 +325,29 @@ game.onUpdateInterval(350, function () {
         false
         )
         Dirección = 1
+    }
+})
+game.onUpdateInterval(1, function () {
+    if (_200 < info.score()) {
+        xhf = sprites.create(img`
+            . . . . f f f f f f f . . . . . 
+            . . f f f f f f f f f f f . . . 
+            . f f f f f f f f f f f f f . . 
+            . f f f f f f f f f f f f f . . 
+            f f f f f f f f f f f f f f f . 
+            f f f f f f f f f f f f f f f . 
+            f f f f f f f f f f f f f f f . 
+            f f f f f f f f f f f f f f f . 
+            f f f f f f f f f f f f f f f . 
+            f f f f f f f f f f f f f f f . 
+            f f f f f f f f f f f f f f f . 
+            . f f f f f f f f f f f f f . . 
+            . f f f f f f f f f f f f f . . 
+            . . f f f f f f f f f f f . . . 
+            . . . . f f f f f f f . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, SpriteKind.bos)
+        tiles.placeOnRandomTile(xhf, assets.tile`miMosaico`)
     }
 })
 game.onUpdateInterval(500, function () {
