@@ -10,8 +10,8 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.bos, function (sprite, otherSpri
     pizza += -1
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.fm, function (sprite, otherSprite) {
-    info.changeScoreBy(20)
-    pizza += 20
+    info.changeScoreBy(100)
+    pizza += 100
     tiles.placeOnRandomTile(pizzeria, sprites.dungeon.floorDark3)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile`, function (sprite, location) {
@@ -130,6 +130,7 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.bos, function (sprite, other
     info.changeScoreBy(5)
     pizza += 5
     sprites.destroy(otherSprite)
+    sprites.destroy(sprite)
 })
 info.onScore(200, function () {
     tiles.setCurrentTilemap(tilemap`nivel0`)
@@ -174,7 +175,7 @@ info.onScore(200, function () {
         ........................................
         ........................................
         ........................................
-        `, SpriteKind.Player)
+        `, SpriteKind.fm)
     tiles.placeOnRandomTile(pizzeria, sprites.dungeon.floorDark3)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
@@ -187,8 +188,6 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
     sprites.destroy(sprite)
     tiles.placeOnRandomTile(pizzeria, sprites.vehicle.roadVertical)
 })
-/**
- */
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     info.changeScoreBy(-5)
     pizza += -5
@@ -328,28 +327,32 @@ game.onUpdateInterval(350, function () {
     }
 })
 game.onUpdateInterval(1, function () {
-    if (_200 < info.score()) {
-        xhf = sprites.create(img`
-            . . . . f f f f f f f . . . . . 
-            . . f f f f f f f f f f f . . . 
-            . f f f f f f f f f f f f f . . 
-            . f f f f f f f f f f f f f . . 
-            f f f f f f f f f f f f f f f . 
-            f f f f f f f f f f f f f f f . 
-            f f f f f f f f f f f f f f f . 
-            f f f f f f f f f f f f f f f . 
-            f f f f f f f f f f f f f f f . 
-            f f f f f f f f f f f f f f f . 
-            f f f f f f f f f f f f f f f . 
-            . f f f f f f f f f f f f f . . 
-            . f f f f f f f f f f f f f . . 
-            . . f f f f f f f f f f f . . . 
-            . . . . f f f f f f f . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `, SpriteKind.bos)
-        tiles.placeOnRandomTile(xhf, assets.tile`miMosaico`)
-        xhf.follow(paco, 30)
+    xhf = sprites.create(img`
+        . . . . f f f f f f f . . . . . 
+        . . f f f f f f f f f f f . . . 
+        . f f f f f f f f f f f f f . . 
+        . f f f f f f f f f f f f f . . 
+        f f f f f f f f f f f f f f f . 
+        f f f f f f f f f f f f f f f . 
+        f f f f f f f f f f f f f f f . 
+        f f f f f f f f f f f f f f f . 
+        f f f f f f f f f f f f f f f . 
+        f f f f f f f f f f f f f f f . 
+        f f f f f f f f f f f f f f f . 
+        . f f f f f f f f f f f f f . . 
+        . f f f f f f f f f f f f f . . 
+        . . f f f f f f f f f f f . . . 
+        . . . . f f f f f f f . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, SpriteKind.bos)
+    tiles.placeOnRandomTile(xhf, assets.tile`miMosaico`)
+    xhf.follow(paco, 30)
+    if (_200 > info.score()) {
+        sprites.destroy(xhf)
     }
+})
+forever(function () {
+    music.play(music.stringPlayable("D C E F C F D A ", 120), music.PlaybackMode.LoopingInBackground)
 })
 game.onUpdateInterval(500, function () {
     if (pizza == 0) {
