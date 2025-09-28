@@ -348,6 +348,7 @@ game.onUpdateInterval(1, function () {
             . . . . . . . . . . . . . . . . 
             `, SpriteKind.bos)
         tiles.placeOnRandomTile(xhf, assets.tile`miMosaico`)
+        xhf.follow(paco, 30)
     }
 })
 game.onUpdateInterval(500, function () {
